@@ -30,6 +30,9 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install Dependencies
+        run: bun i
+
       - name: Build Artifacts
         run: bun run build
 
