@@ -1,0 +1,35 @@
+# Deploy the web application
+# into the cloudflare workers as production
+#
+# ***** NOTE ******
+# This deployment need to setup some secrets
+
+name: Deploy APIs to Production
+
+# Only run this workflows if
+# the user start manual the actions
+# and push the code into the main branch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/api/**"
+
+jobs:
+  update:
+    name: Update API App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{secrets.CF_ACCOUNT_ID}}
+          wranglerVersion: "3"
+          workingDirectory: "apps/api"
+          command: "deploy --minify src/index.ts"

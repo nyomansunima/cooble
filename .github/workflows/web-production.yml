@@ -1,0 +1,45 @@
+# Deploy the web application
+# into the cloudflare pages as production
+#
+# ***** NOTE ******
+# This deployment need to setup some secrets
+
+name: Deploy Web Application to Production
+
+# Only run this workflows if
+# the user start manual the actions
+# and push the code into the main branch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/web/**"
+
+jobs:
+  update:
+    name: Update Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Build Artifacts
+        run: bun run build
+
+      - name: Deploy
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{secrets.CF_API_TOKEN}}
+          accountId: ${{secrets.CF_ACCOUNT_ID}}
+          projectName: "cooble"
+          directory: "dist"
+          workingDirectory: "apps/web"
+          gitHubToken: ${{secrets.GITHUB_TOKEN}}
+          wranglerVersion: "3"
