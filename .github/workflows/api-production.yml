@@ -25,6 +25,14 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun i
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
