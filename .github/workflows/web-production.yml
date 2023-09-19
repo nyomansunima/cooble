@@ -31,9 +31,11 @@ jobs:
           bun-version: latest
 
       - name: Install Dependencies
+        working-directory: ./apps/web
         run: bun i
 
       - name: Build Artifacts
+        working-directory: ./apps/web
         run: bun run build
 
       - name: Deploy
