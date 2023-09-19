@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./apps/api
-        run: bun i
+        run: bun install
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
