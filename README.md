@@ -1,86 +1,63 @@
 <!-- README -->
 
-![Github Social Preview (4)](https://github.com/nyomansunima/nyomansunima.com/assets/54091887/9b4c46c0-4be1-4318-a112-bc397707f89d)
+![Github Banner](https://github.com/nyomansunima/cooble/assets/54091887/4745b7c3-a0fe-4802-91b0-25702aa928d6)
 
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/nyomansunima/personal-site)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/nyomansunima/cooble)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/nyomansunima)
-![GitHub](https://img.shields.io/github/license/nyomansunima/personal-site)
-![GitHub issues](https://img.shields.io/github/issues/nyomansunima/personal-site)
+![GitHub](https://img.shields.io/github/license/nyomansunima/cooble)
+![GitHub issues](https://img.shields.io/github/issues/nyomansunima/cooble)
 
 <br/>
 
-[🐛 Issues](https://github.com/nyomansunima/personal-site/issues) . [📝 Explore docs](https://github.com/nyomansunima/personal-site)
+[🐛 Issues](https://github.com/nyomansunima/cooble/issues) . [📝 Explore docs](https://github.com/nyomansunima/cooble)
 
-# Personal Site
+# Cooble - Work from anywhere
 
-My personal website to connect and share something with client and audience
+Cooble is a cutting-edge platform designed to revolutionize the way you work remotely. With Cooble, you can easily rent fully-equipped remote work setups tailored to your specific needs, no matter where you are in the world. Say goodbye to the hassles of setting up a productive workspace – Cooble has you covered.
 
-<br/>
+## About
 
-<br/>
+In a world where remote work is becoming increasingly prevalent, the need for a seamless and adaptable remote workspace solution has never been greater. Enter Cooble, a groundbreaking project designed to transform the way we work from anywhere in the world.
 
-<!-- ABOUT -->
+You can access this site on [https://cooble.sonibble.com](https://cooble.sonibble.com)
 
-## 👏 About
-
-This project is contain my personal site apps, including the backend and the frontend.
-The concept of this site is simple, powerful, creative, and clean.
-
-You can access this site on [https://nyomansunima.com](https://nyomansunima.com)
-
-### 😎 Screenshots
+### Screenshots
 
 Here are some screenshot that cover the application look
 
-<br/>
+### Motivation
 
-### 💘 Motivation
+Cooble was born out of a passion for making remote work as efficient and comfortable as possible. Our team of dedicated professionals recognized the challenges that come with remote work – from finding a suitable workspace to ensuring the right equipment and amenities are readily available. We were motivated by the desire to address these challenges and empower individuals and businesses to thrive in the remote work landscape.
 
-When one to connect and cengage with my skill i realize that need a website that can communicate and cover all ide need to my client, audience, friends, and also the collages. That's why i building this project. I want to make website that look cool, fast and modern with simplicity.
-
-I also need include most of my managed project, explorations, status, blog and other. So when i connect with people i can start by sharing my website, and they can explore me what iam doing on.
-
-<br/>
-
-## ✈️ Features
+## Features
 
 This project is contain buch of feature included to help me support my workflow
 
-- 🚀 Project Showcase
-- 🎯 Target and Status
-- ✈️ Explorations into stack and project
-- 💘 Service to offer with client
-- 😎 Personal bio link profile
-- 🧑🏿‍💻 Blog and detail content
-- 🧐 About me
-- ⁉️ FAQs
-- 🏓 Newsletter
-- 🎉 Many other includeds
+- Flexbible rental
+- Booking option
+- Support & issue helper
+- Instant & fast delivery
+- Location supported up to 20
 
-<br/>
-
-<!-- STACKS -->
-
-## 🥝 Stacks
+## Stacks
 
 Since building this project here are list about stack, site, tech and any library in this project
 
-- [NuxtJs](https://nuxt.com)
-- [Sanity.io](https://www.sanity.io/)
+- [Vite](https://vitejs.dev)
+- [Hono](https://hono.dev)
 - [GSAP](https://greensock.com/gsap/)
 - [Tailwincss](https://tailwindcss.com/)
 - [Lenis Scroll Smoother](https://lenis.studiofreight.com/)
-- [Vercel](https://vercel.com/)
-- [GoDaddy](https://www.godaddy.com/)
+- [Cloudflare](https://cloudflare.com)
 
-<br/>
-
-## ✅ Roadmap
+## Roadmap
 
 All about the task, issues, and roadmap for this projec you can find it on Project Section.
 
-<br/>
+## License
 
-## 🎉 Thanks
+This project is maintain under the [MIT License](./LICENSE). Please read how to use this project.
+
+## Thanks
 
 Thanks to read this project documentation.
