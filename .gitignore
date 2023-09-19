@@ -1,6 +1,8 @@
 # build
 dist
-dist-ssr
+.next
+out
+build
 *.local
 
 
@@ -16,6 +18,8 @@ yarn.lock
 pnpm-lock.yaml
 bun.lockb
 
+# deployment
+.vercel
 
 # Editor directories and files
 .vscode/*
