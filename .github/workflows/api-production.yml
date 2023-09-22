@@ -41,4 +41,4 @@ jobs:
           accountId: ${{secrets.CF_ACCOUNT_ID}}
           wranglerVersion: "3"
           workingDirectory: "apps/api"
-          command: "deploy --minify src/index.ts"
+          command: "deploy --minify src/main.ts"

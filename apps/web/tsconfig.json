@@ -19,6 +19,9 @@
       }
     ],
     "paths": {
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
       "~/*": ["./src/*"]
     }
   },
