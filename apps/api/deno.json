@@ -5,6 +5,8 @@
   },
   "imports": {
     "~/": "./src/",
+    "/": "./",
+    "./": "./",
     "oak": "https://deno.land/x/oak@v12.6.1/mod.ts",
     "compress": "https://deno.land/x/oak_compress@v0.0.2/mod.ts",
     "rate-limit": "https://deno.land/x/oak_rate_limit@v0.1.1/mod.ts",

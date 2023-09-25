@@ -5,7 +5,7 @@ import * as compress from 'compress'
 import { RateLimiter } from 'rate-limit'
 import { oakCors } from 'cors'
 import authController from '~/auth/auth.controller.ts'
-import userController from '~/user/user.controller.ts'
+import userController from './user/user.controller.ts'
 
 const rateLimit = await RateLimiter({
   windowMs: 1000,
