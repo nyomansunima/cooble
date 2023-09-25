@@ -4,7 +4,7 @@
 # ***** NOTE ******
 # This deployment need to setup some secrets
 
-name: Deploy APIs to Production
+name: Api Production
 
 # Only run this workflows if
 # the user start manual the actions
