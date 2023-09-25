@@ -38,6 +38,9 @@ jobs:
         with:
           deno-version: 1.37.0
 
+      - name: Install Deployctl
+        run: deno install --allow-all --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+
       - name: Cache Dependencies
         working-directory: ./apps/api
         run: deno task install
@@ -48,4 +51,5 @@ jobs:
           project: cooble-api
           entrypoint: main.ts
           root: apps/api/src
+          import-map: apps/api/deno.json
         
