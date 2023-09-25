@@ -1,30 +1,28 @@
-import { Hono } from 'hono'
-import { routeHandler } from '~/utils/route-handler'
-import { zValidator } from '@hono/zod-validator'
-import {
-  githubAuthInputSchema,
-  googleAuthInputSchema,
-} from './model/auth.input'
-import { authService } from './auth.service'
+import { Router } from 'oak'
+import { middlewareHandler } from '../utils/handler.ts'
+import { validateBody } from '~/utils/validation.ts'
+import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
+import { getBody } from '~/utils/helpers.ts'
+import { authService } from './auth.service.ts'
 
-const authController = new Hono()
+const authController = new Router()
 
-authController
-  .post(
-    '/google',
-    zValidator('json', googleAuthInputSchema),
-    routeHandler(async (ctx) => {
-      const body = await ctx.req.json()
-      return await authService.googleAuth(body)
-    }),
-  )
-  .post(
-    '/github',
-    zValidator('json', githubAuthInputSchema),
-    routeHandler(async (ctx) => {
-      const body = await ctx.req.json()
-      return await authService.githubAuth(body)
-    }),
-  )
+authController.post(
+  '/auth/google',
+  validateBody(GoogleAuthInput),
+  middlewareHandler(async (ctx) => {
+    const body = await getBody(ctx)
+    return await authService.googleAuth(body)
+  }),
+)
+
+authController.post(
+  '/auth/github',
+  validateBody(GithubAuthInput),
+  middlewareHandler(async (ctx) => {
+    const body = await getBody(ctx)
+    return await authService.githubAuth(body)
+  }),
+)
 
 export default authController

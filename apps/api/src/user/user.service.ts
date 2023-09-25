@@ -1,8 +1,8 @@
-import { GithubOAuthData, GoogleOAuthData } from '~/auth/model/auth.payload'
-import { UserPayload } from './model/user.payload'
-import { Users, getXataClient } from '~/config/xata'
-import { CreateUserInput } from './model/user.input'
-import { UnprocessableEntityException } from '~/common/http-exception'
+import { GithubOAuthData, GoogleOAuthData } from '~/auth/model/auth.payload.ts'
+import { UserPayload } from './model/user.payload.ts'
+import { getXataClient, Users } from '~/config/xata.ts'
+import { CreateUserInput } from './model/user.input.ts'
+import { UnprocessableEntityException } from '../utils/http-exception.ts'
 
 class UserService {
   async getUserByEmail(email: string): Promise<Users | null> {
@@ -25,7 +25,7 @@ class UserService {
         await getXataClient().db.users.update(user.id, {
           providers: [...user.providers!, provider],
         })
-      } catch (error) {
+      } catch {
         throw new UnprocessableEntityException('auth/failed-update-provider')
       }
     }
@@ -41,6 +41,7 @@ class UserService {
         email: input.email,
         verified: false,
         fullName: input.name,
+        role: 'user',
         providers: [GOOGLE_PROVIDER],
         username: this.generateUsernameFromEmail(input.email),
       }
@@ -62,6 +63,7 @@ class UserService {
         email: input.email,
         verified: false,
         fullName: input.name,
+        role: 'user',
         providers: [GITHUB_PROVIDER],
         location: input.location,
         username: this.generateUsernameFromEmail(input.email),

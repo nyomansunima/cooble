@@ -1,13 +1,47 @@
-import { userService } from '~/user/user.service'
-import { GithubAuthInput, GoogleAuthInput } from './model/auth.input'
-import { AuthPayload } from './model/auth.payload'
-import { oauthService } from './oauth.service'
-import { Users } from '~/config/xata'
+import { userService } from '~/user/user.service.ts'
+import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
+import { AuthPayload } from './model/auth.payload.ts'
+import { oauthService } from './oauth.service.ts'
+import { Users } from '~/config/xata.ts'
+import * as jose from 'jose'
+import { configuration } from '~/config/configuration.ts'
 
 class AuthService {
   async generateToken(user: Users): Promise<AuthPayload> {
-    // TODO: add the code to generate the token payload
-    return {} as any
+    const secret = new TextEncoder().encode(
+      configuration.auth.jwt.secret,
+    )
+    const alg = 'HS256'
+    const accessToken = await new jose.SignJWT({
+      'urn:cooble:claim': true,
+      email: user.email,
+      role: user.role,
+    })
+      .setProtectedHeader({ alg })
+      .setIssuedAt()
+      .setIssuer('urn:cooble:issuer')
+      .setAudience('urn:cooble:audience')
+      .setExpirationTime(configuration.auth.jwt.accessExp)
+      .setSubject(user.id)
+      .sign(secret)
+
+    const refreshToken = await new jose.SignJWT({
+      'urn:cooble:claim': true,
+      email: user.email,
+      role: user.role,
+    })
+      .setProtectedHeader({ alg })
+      .setIssuedAt()
+      .setIssuer('urn:cooble:issuer')
+      .setAudience('urn:cooble:audience')
+      .setExpirationTime(configuration.auth.jwt.refreshExp)
+      .setSubject(user.id)
+      .sign(secret)
+
+    return {
+      accessToken,
+      refreshToken,
+    }
   }
 
   async googleAuth(input: GoogleAuthInput): Promise<AuthPayload> {

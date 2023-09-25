@@ -1,37 +1,54 @@
-import { Hono } from 'hono'
-import { cors } from 'hono/cors'
-import { logger } from 'hono/logger'
-import { secureHeaders } from 'hono/secure-headers'
-import { poweredBy } from 'hono/powered-by'
-import { prettyJSON } from 'hono/pretty-json'
-import authController from './auth/auth.controller'
-import { routeHandler } from './utils/route-handler'
-import { NotFoundException } from './common/http-exception'
+import { Application } from 'oak'
+import { load } from 'std/dotenv/mod.ts'
+import * as log from 'std/log/mod.ts'
+import * as compress from 'compress'
+import { RateLimiter } from 'rate-limit'
+import { oakCors } from 'cors'
+import authController from '~/auth/auth.controller.ts'
+import userController from '~/user/user.controller.ts'
 
-/**
- * ## app
- * define the application to server the worksers
- */
-const app = new Hono()
+const rateLimit = await RateLimiter({
+  windowMs: 1000,
+  max: 10,
+  headers: true,
+  message: 'Too many requests, please try again later.',
+  statusCode: 429,
+}) as any
 
-// middlware allow to add more configuration
-// to the basic application
-app.use('*', poweredBy())
-app.use('*', logger())
-app.use('/*', cors({ origin: '*' }))
-app.use('*', secureHeaders())
-app.use('*', prettyJSON())
+/** Load environment variables before use it */
+async function loadConfiguration() {
+  log.debug(`Load the environment variables`)
+  await load({ export: true })
+}
 
-// register another controller to manage the routes
-// TODO:  add all of the controller of rest api
-app.route('/auth', authController)
-app.notFound(
-  routeHandler(() => {
-    throw new NotFoundException(
-      'not found',
-      'Opps something missing from your url. Please use the correct methods, and url',
+/** Bootstrap the application and all dependecies in one place */
+async function bootstrap() {
+  await loadConfiguration()
+
+  log.info('Bootstraping the application')
+
+  const app = new Application()
+  log.info('Regitering middleware')
+  app.use(compress.brotli())
+  app.use(rateLimit)
+  app.use(oakCors({
+    origin: '*',
+  }))
+
+  // TODO: Regiter the controller routes
+  log.info('Regitering routes')
+  app.use(authController.routes(), authController.allowedMethods())
+  app.use(userController.routes(), userController.allowedMethods())
+
+  app.addEventListener('listen', ({ hostname, port, secure }) => {
+    log.info(
+      `Listening on: ${secure ? 'https://' : 'http://'}${
+        hostname ?? 'localhost'
+      }:${port}`,
     )
-  }),
-)
+  })
 
-export default app
+  await app.listen({ port: 4000 })
+}
+
+bootstrap()

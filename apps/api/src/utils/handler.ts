@@ -1,10 +1,10 @@
-import { Context, Next } from 'hono'
-import { HttpErrorException } from '~/common/http-exception'
+import { Middleware, RouterContext, RouterMiddleware } from 'oak'
+import { HttpErrorException } from './http-exception.ts'
 
-type FallBackFunctionReturnType = (
-  ctx: Context,
-  next: Next,
-) => Promise<void | Context | any> | (void | Context | any)
+type FallbackFunction = (
+  ctx: RouterContext<any>,
+  next: () => Promise<unknown>,
+) => Promise<any> | any
 
 /**
  * ## routeHandler
@@ -15,10 +15,10 @@ type FallBackFunctionReturnType = (
  * @param fallbackFunction function to handle and return something
  * @returns {Context}
  */
-export function routeHandler(
-  fallbackFunction: FallBackFunctionReturnType,
-): any {
-  return async (ctx: Context, next: Next) => {
+export function middlewareHandler(
+  fallbackFunction: FallbackFunction,
+): RouterMiddleware<any> | Middleware {
+  return async (ctx: RouterContext<any>, next: any) => {
     try {
       // get the initial data from the given fallback
       // allow to infer all of the function to running
@@ -29,14 +29,14 @@ export function routeHandler(
         return await next()
       }
 
-      return ctx.json(returnedData)
+      return ctx.response.body = returnedData
     } catch (err) {
       // catch some error
       // then spread it into a custom error http exception
       // this will work with custom http exceptions
       const { message, statusCode, description } = err as HttpErrorException
-      ctx.status(statusCode)
-      return ctx.json({ message, error: description, statusCode })
+      ctx.response.status = statusCode
+      return ctx.response.body = { message, error: description, statusCode }
     }
   }
 }

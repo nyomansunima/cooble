@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 
 export default function SigninPage() {
   return (
-    <main className="flex h-screen w-screen">
+    <main className='flex h-screen w-screen'>
       <Button
         asChild
         variant={'outline'}
         size={'sm'}
-        className="absolute top-5 laptop:left-24 left-5 animate-in slide-in-from-top-6 duration-1000"
+        className='absolute top-5 laptop:left-24 left-5 animate-in slide-in-from-top-6 duration-1000'
       >
         <Link href={'/'}>
-          <i className="fi fi-rr-arrow-left text-base" />
+          <i className='fi fi-rr-arrow-left text-base' />
           Back
         </Link>
       </Button>

@@ -1,8 +1,6 @@
 export interface AuthPayload {
   accessToken: string
   refreshToken: string
-  iat: number
-  exp: number
 }
 
 export interface AuthJwtUser {

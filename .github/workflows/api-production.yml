@@ -1,5 +1,5 @@
 # Deploy the web application
-# into the cloudflare workers as production
+# into the deno deploy as production
 #
 # ***** NOTE ******
 # This deployment need to setup some secrets
@@ -17,28 +17,35 @@ on:
     paths:
       - "apps/api/**"
 
+env:
+  DENO_DEPLOY_TOKEN: ${{secrets.DENO_DEPLOY_TOKEN}}
+
 jobs:
-  update:
+  deploy:
     name: Update API App
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+      
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
 
-      - name: Setup Bun Environment
-        uses: oven-sh/setup-bun@v1
+      - name: Setup Deno Environment
+        uses: denoland/setup-deno@v1
         with:
-          bun-version: latest
+          deno-version: 1.37.0
 
-      - name: Install Dependencies
+      - name: Cache Dependencies
         working-directory: ./apps/api
-        run: bun install
+        run: deno task install
 
-      - name: Deploy
-        uses: cloudflare/wrangler-action@v3
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{secrets.CF_ACCOUNT_ID}}
-          wranglerVersion: "3"
-          workingDirectory: "apps/api"
-          command: "deploy --minify src/main.ts"
+          project: cooble-api
+          entrypoint: src/main.ts
+          root: apps/api
+        

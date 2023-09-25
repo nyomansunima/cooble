@@ -1,16 +1,14 @@
-import { z } from 'zod'
+import { IsString } from 'validatorus'
 
-export const googleAuthInputSchema = z.object({
-  accessToken: z.string().min(1, 'Access token cannot be empty'),
-  idToken: z.string().min(1, 'ID Token cannot be empty'),
-})
+export class GoogleAuthInput {
+  @IsString()
+  accessToken!: string
 
-export const githubAuthInputSchema = z.object({
-  accessToken: z.string().min(1, 'Access token cannot be empty'),
-})
+  @IsString()
+  idToken!: string
+}
 
-export interface GoogleAuthInput
-  extends z.infer<typeof googleAuthInputSchema> {}
-
-export interface GithubAuthInput
-  extends z.infer<typeof githubAuthInputSchema> {}
+export class GithubAuthInput {
+  @IsString()
+  accessToken!: string
+}

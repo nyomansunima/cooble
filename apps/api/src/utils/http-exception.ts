@@ -1,5 +1,3 @@
-import { HTTPException } from 'hono/http-exception'
-
 /**
  * Provide custome http exception that allow to infer the
  * error into a response to API
@@ -7,12 +5,12 @@ import { HTTPException } from 'hono/http-exception'
  * working with api handler
  */
 
-export class HttpErrorException extends HTTPException {
+export class HttpErrorException extends Error {
   statusCode: number
   description?: string
 
   constructor(statusCode: number, message?: string, description?: string) {
-    super(statusCode, { message })
+    super(message)
     this.description = description
     this.statusCode = statusCode
   }

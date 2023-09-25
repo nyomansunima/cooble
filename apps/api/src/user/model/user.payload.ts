@@ -1,3 +1,3 @@
-import { Users } from '~/config/xata'
+import { Users } from '~/config/xata.ts'
 
 export interface UserPayload extends Users {}

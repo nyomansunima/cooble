@@ -18,6 +18,7 @@ const tables = [
       { name: "location", type: "string" },
       { name: "verified", type: "bool", defaultValue: "false" },
       { name: "providers", type: "multiple" },
+      { name: "role", type: "string" },
     ],
   },
 ] as const;
