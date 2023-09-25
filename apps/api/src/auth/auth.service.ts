@@ -1,10 +1,10 @@
-import { userService } from '~/user/user.service.ts'
+import { userService } from '../user/user.service.ts'
 import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
 import { AuthPayload } from './model/auth.payload.ts'
 import { oauthService } from './oauth.service.ts'
-import { Users } from '~/config/xata.ts'
+import { Users } from '../config/xata.ts'
 import * as jose from 'jose'
-import { configuration } from '~/config/configuration.ts'
+import { configuration } from '../config/configuration.ts'
 
 class AuthService {
   async generateToken(user: Users): Promise<AuthPayload> {

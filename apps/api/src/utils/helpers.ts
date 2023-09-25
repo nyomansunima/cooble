@@ -1,6 +1,5 @@
-import { exportPKCS8 } from 'jose'
 import { RouterContext } from 'oak'
-import { AuthJwtUser } from '~/auth/model/auth.payload.ts'
+import { AuthJwtUser } from '../auth/model/auth.payload.ts'
 
 /**
  * Get the query params from context

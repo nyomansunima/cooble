@@ -1,6 +1,6 @@
 import { validate } from 'validatorus'
 import { RouterContext, Status } from 'oak'
-import { getBody, getParams, getQuery } from '~/utils/helpers.ts'
+import { getBody, getParams, getQuery } from '../utils/helpers.ts'
 
 /**
  * ## validationMiddleware

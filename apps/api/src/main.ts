@@ -4,7 +4,7 @@ import * as log from 'std/log/mod.ts'
 import * as compress from 'compress'
 import { RateLimiter } from 'rate-limit'
 import { oakCors } from 'cors'
-import authController from '~/auth/auth.controller.ts'
+import authController from './auth/auth.controller.ts'
 import userController from './user/user.controller.ts'
 
 const rateLimit = await RateLimiter({

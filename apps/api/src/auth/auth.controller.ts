@@ -1,8 +1,8 @@
 import { Router } from 'oak'
 import { middlewareHandler } from '../utils/handler.ts'
-import { validateBody } from '~/utils/validation.ts'
+import { validateBody } from '../utils/validation.ts'
 import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
-import { getBody } from '~/utils/helpers.ts'
+import { getBody } from '../utils/helpers.ts'
 import { authService } from './auth.service.ts'
 
 const authController = new Router()

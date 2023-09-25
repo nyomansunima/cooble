@@ -1,9 +1,9 @@
-import { configuration } from '~/config/configuration.ts'
+import { configuration } from '../config/configuration.ts'
 import * as jose from 'jose'
 import {
   ForbiddenException,
   UnauthorizedException,
-} from '~/utils/http-exception.ts'
+} from '../utils/http-exception.ts'
 import { AuthJwtUser } from './model/auth.payload.ts'
 import { middlewareHandler } from '../utils/handler.ts'
 

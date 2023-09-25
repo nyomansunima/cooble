@@ -1,6 +1,6 @@
-import { GithubOAuthData, GoogleOAuthData } from '~/auth/model/auth.payload.ts'
+import { GithubOAuthData, GoogleOAuthData } from '../auth/model/auth.payload.ts'
 import { UserPayload } from './model/user.payload.ts'
-import { getXataClient, Users } from '~/config/xata.ts'
+import { getXataClient, Users } from '../config/xata.ts'
 import { CreateUserInput } from './model/user.input.ts'
 import { UnprocessableEntityException } from '../utils/http-exception.ts'
 
