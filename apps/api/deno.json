@@ -1,0 +1,38 @@
+{
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  },
+  "imports": {
+    "~/": "./src/",
+    "oak": "https://deno.land/x/oak@v12.6.1/mod.ts",
+    "compress": "https://deno.land/x/oak_compress@v0.0.2/mod.ts",
+    "rate-limit": "https://deno.land/x/oak_rate_limit@v0.1.1/mod.ts",
+    "cors": "https://deno.land/x/cors@v1.2.2/mod.ts",
+    "@xata.io/client": "npm:@xata.io/client",
+    "axiod": "https://deno.land/x/axiod@0.26.2/mod.ts",
+    "validatorus": "https://deno.land/x/validatorus@v1.0.3/mod.ts",
+    "jose": "https://deno.land/x/jose@v4.14.6/index.ts",
+    "superoak": "https://deno.land/x/superoak@4.7.0/mod.ts",
+    "std/": "https://deno.land/std@0.202.0/"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "no-explicit-any"
+      ]
+    }
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "noImplicitAny": false
+  },
+  "tasks": {
+    "install": "deno cache src/main.ts",
+    "dev": "deno run --watch -A src/main.ts",
+    "start": "deno run -A src/main.ts",
+    "database:codegen": "xata codegen",
+    "test:e2e": "deno test -A test/e2e/*"
+  }
+}

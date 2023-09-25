@@ -1,0 +1,36 @@
+# End to End Testing Backend api application
+# using deno testing
+
+name: API Testing
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/api/**"
+
+jobs:
+  provide-api:
+    name: Start Backend API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      
+      - name: Setup Deno Environment
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 1.37.0
+
+      - name: Cache Dependencies
+        working-directory: ./apps/api
+        run: deno task install
+
+      - name: Setup Environment Variables
+        working-directory: ./apps/api
+        run: |
+          echo "${{ secrets.API_ENV_FILE }}" > .env
+      
+      - name: E2E Testing
+        working-directory: ./apps/api
+        run: deno task test:e2e

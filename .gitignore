@@ -18,6 +18,10 @@ yarn.lock
 pnpm-lock.yaml
 bun.lockb
 
+.env*
+.xatarc
+.xata
+
 # deployment
 .vercel
 
