@@ -46,6 +46,6 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: cooble-api
-          entrypoint: src/main.ts
+          entrypoint: main.ts
           root: apps/api
         
