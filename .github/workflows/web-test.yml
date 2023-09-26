@@ -11,40 +11,9 @@ on:
       - "apps/web/**"
 
 jobs:
-  provide-api:
-    name: Start Backend API
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun Environment
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install Nitric CLI
-        uses: nitrictech/setup-nitric@v1
-        with:
-          version: 1.29.5
-
-      - name: Install Dependencies
-        working-directory: ./apps/api
-        run: bun install
-
-      - name: Setup Environment Variables
-        working-directory: ./apps/api
-        run: |
-          echo "${{ secrets.API_ENV_FILE }}" > .env
-
-      - name: Start server
-        working-directory: ./apps/api
-        run: bun run start
-
   e2e-testing:
     name: End to End Testing Web App
     runs-on: ubuntu-latest
-    needs: provide-api
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
