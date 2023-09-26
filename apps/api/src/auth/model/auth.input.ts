@@ -1,14 +1,16 @@
-import { IsString } from 'validatorus'
+import { IsNotEmpty, IsString } from 'class-validator'
 
 export class GoogleAuthInput {
   @IsString()
-  accessToken!: string
+  @IsNotEmpty()
+  accessToken: string
 
   @IsString()
-  idToken!: string
+  idToken: string
 }
 
 export class GithubAuthInput {
   @IsString()
-  accessToken!: string
+  @IsNotEmpty()
+  accessToken: string
 }

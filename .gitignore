@@ -25,8 +25,9 @@ bun.lockb
 # deployment
 .vercel
 
+.nitric
+
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store

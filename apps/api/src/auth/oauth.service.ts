@@ -1,18 +1,18 @@
-import axiod from 'axiod'
-import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
+import axios from 'axios'
+import { GithubAuthInput, GoogleAuthInput } from './model/auth.input'
 import {
   GithubOAuthData,
   GithubOAuthEmailData,
   GoogleOAuthData,
-} from './model/auth.payload.ts'
+} from './model/auth.payload'
 import {
   BadGatewayException,
   BadRequestException,
-} from '../utils/http-exception.ts'
+} from '../utils/http-exception'
 
 class OAuthService {
   async retrieveGoogleUser(input: GoogleAuthInput): Promise<GoogleOAuthData> {
-    const res = await axiod
+    const res = await axios
       .get<GoogleOAuthData>(
         `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${input.accessToken}`,
         {
@@ -33,7 +33,7 @@ class OAuthService {
   }
 
   async retrieveGithubUser(input: GithubAuthInput): Promise<GithubOAuthData> {
-    const emailRes = await axiod
+    const emailRes = await axios
       .get<GithubOAuthEmailData[]>(`https://api.github.com/user/emails`, {
         headers: {
           Authorization: `Bearer ${input.accessToken}`,
@@ -47,7 +47,7 @@ class OAuthService {
         )
       })
 
-    const detailRes = await axiod
+    const detailRes = await axios
       .get(`https://api.github.com/user`, {
         headers: {
           Authorization: `Bearer ${input.accessToken}`,

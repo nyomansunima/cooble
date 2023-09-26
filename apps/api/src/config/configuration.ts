@@ -1,15 +1,15 @@
 export const configuration = {
   auth: {
     jwt: {
-      secret: Deno.env.get('AUTH_JWT_SECRET')!,
-      accessExp: Deno.env.get('AUTH_ACCESS_EXP')!,
-      refreshExp: Deno.env.get('AUTH_REFRESH_EXP')!,
+      secret: process.env.AUTH_JWT_SECRET!,
+      accessExp: process.env.AUTH_ACCESS_EXP!,
+      refreshExp: process.env.AUTH_REFRESH_EXP!,
     },
   },
   database: {
     xata: {
-      branch: Deno.env.get('XATA_BRANCH')!,
-      apiKey: Deno.env.get('XATA_API_KEY')!,
+      branch: process.env.XATA_BRANCH!,
+      apiKey: process.env.XATA_API_KEY!,
     },
   },
 }

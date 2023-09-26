@@ -1,5 +1,5 @@
-import { RouterContext } from 'oak'
-import { AuthJwtUser } from '../auth/model/auth.payload.ts'
+import { Request } from 'express'
+import { AuthJwtUser } from '~/auth/model/auth.payload'
 
 /**
  * Get the query params from context
@@ -7,14 +7,9 @@ import { AuthJwtUser } from '../auth/model/auth.payload.ts'
  * @param ctx - router context
  * @returns {Record<string, any>}
  */
-export function getQuery(ctx: RouterContext<string>): Record<string, any> {
-  const queryParams = ctx.request.url.searchParams
-  const queryParamsObject: { [key: string]: string } = {}
-  for (const [key, value] of queryParams.entries()) {
-    queryParamsObject[key] = value
-  }
-
-  return queryParamsObject
+export function getQuery(req: Request): Record<string, any> {
+  const queryParams = req.query
+  return queryParams
 }
 
 /**
@@ -23,8 +18,8 @@ export function getQuery(ctx: RouterContext<string>): Record<string, any> {
  * @param ctx - Router context
  * @returns {Record<string, any>}
  */
-export function getParams(ctx: RouterContext<string>): Record<string, any> {
-  const params = ctx.params
+export function getParams(req: Request): Record<string, any> {
+  const params = req.params
   return params
 }
 
@@ -34,8 +29,8 @@ export function getParams(ctx: RouterContext<string>): Record<string, any> {
  * @param ctx - Router context
  * @returns {any}
  */
-export async function getBody(ctx: RouterContext<string>): Promise<any> {
-  const body = await ctx.request.body().value
+export function getBody(req: Request): any {
+  const body = req.body
   return body
 }
 
@@ -45,7 +40,7 @@ export async function getBody(ctx: RouterContext<string>): Promise<any> {
  * @param ctx Router context
  * @returns {AuthJwtUser}
  */
-export function getAuthUser(ctx: RouterContext<string>): AuthJwtUser {
-  const user = ctx.state.user as AuthJwtUser
+export function getAuthUser(req: Request): AuthJwtUser {
+  const user = req['user'] as any
   return user
 }

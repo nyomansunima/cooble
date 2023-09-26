@@ -1,42 +1,38 @@
-import { userService } from '../user/user.service.ts'
-import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
-import { AuthPayload } from './model/auth.payload.ts'
-import { oauthService } from './oauth.service.ts'
-import { Users } from '../config/xata.ts'
-import * as jose from 'jose'
-import { configuration } from '../config/configuration.ts'
+import { userService } from '~/user/user.service'
+import { GithubAuthInput, GoogleAuthInput } from './model/auth.input'
+import { AuthPayload } from './model/auth.payload'
+import { oauthService } from './oauth.service'
+import { Users } from '~/config/xata'
+import * as jwt from 'jsonwebtoken'
+import { configuration } from '~/config/configuration'
 
 class AuthService {
   async generateToken(user: Users): Promise<AuthPayload> {
-    const secret = new TextEncoder().encode(
-      configuration.auth.jwt.secret,
-    )
-    const alg = 'HS256'
-    const accessToken = await new jose.SignJWT({
+    const payload = {
       'urn:cooble:claim': true,
       email: user.email,
       role: user.role,
-    })
-      .setProtectedHeader({ alg })
-      .setIssuedAt()
-      .setIssuer('urn:cooble:issuer')
-      .setAudience('urn:cooble:audience')
-      .setExpirationTime(configuration.auth.jwt.accessExp)
-      .setSubject(user.id)
-      .sign(secret)
+    }
 
-    const refreshToken = await new jose.SignJWT({
-      'urn:cooble:claim': true,
-      email: user.email,
-      role: user.role,
+    const accessToken = await jwt.sign(payload, configuration.auth.jwt.secret, {
+      algorithm: 'HS256',
+      issuer: 'urn:cooble:issuer',
+      audience: 'urn:cooble:audience',
+      expiresIn: configuration.auth.jwt.accessExp,
+      subject: user.id,
     })
-      .setProtectedHeader({ alg })
-      .setIssuedAt()
-      .setIssuer('urn:cooble:issuer')
-      .setAudience('urn:cooble:audience')
-      .setExpirationTime(configuration.auth.jwt.refreshExp)
-      .setSubject(user.id)
-      .sign(secret)
+
+    const refreshToken = await jwt.sign(
+      payload,
+      configuration.auth.jwt.secret,
+      {
+        algorithm: 'HS256',
+        issuer: 'urn:cooble:issuer',
+        audience: 'urn:cooble:audience',
+        expiresIn: configuration.auth.jwt.refreshExp,
+        subject: user.id,
+      },
+    )
 
     return {
       accessToken,

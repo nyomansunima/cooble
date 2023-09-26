@@ -1,8 +1,8 @@
-import { GithubOAuthData, GoogleOAuthData } from '../auth/model/auth.payload.ts'
-import { UserPayload } from './model/user.payload.ts'
-import { getXataClient, Users } from '../config/xata.ts'
-import { CreateUserInput } from './model/user.input.ts'
-import { UnprocessableEntityException } from '../utils/http-exception.ts'
+import { GithubOAuthData, GoogleOAuthData } from '~/auth/model/auth.payload'
+import { UserPayload } from './model/user.payload'
+import { getXataClient, Users } from '~/config/xata'
+import { CreateUserInput } from './model/user.input'
+import { UnprocessableEntityException } from '~/utils/http-exception'
 
 class UserService {
   async getUserByEmail(email: string): Promise<Users | null> {

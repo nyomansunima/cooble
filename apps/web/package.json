@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "cooble-web",
   "private": true,
   "scripts": {
     "dev": "next dev",

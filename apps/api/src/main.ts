@@ -1,54 +1,44 @@
-import { Application } from "oak";
-import { load } from "std/dotenv/mod.ts";
-import * as log from "std/log/mod.ts";
-import * as compress from "compress";
-import { RateLimiter } from "rate-limit";
-import { oakCors } from "cors";
-import authController from "~/auth/auth.controller.ts";
-import userController from "~/user/user.controller.ts";
+import { http } from '@nitric/sdk'
+import Application, { json } from 'express'
+import compression from 'compression'
+import rateLimiter from 'express-rate-limit'
+import helmet from 'helmet'
+import expressCors from 'cors'
+import morgan from 'morgan'
+import authController from './auth/auth.controller'
+import userController from './user/user.controller'
 
-const rateLimit = await RateLimiter({
-  windowMs: 1000,
-  max: 10,
-  headers: true,
-  message: "Too many requests, please try again later.",
-  statusCode: 429,
-}) as any;
+/**
+ *  Rate limiting to throtler the incoming request
+ *  then protect from brute force attack
+ */
+const rateLimit = rateLimiter({
+  limit: 20,
+  message: 'Opps, too many request. Please try again later',
+  windowMs: 60 * 100 * 15,
+})
 
-/** Load environment variables before use it */
-async function loadConfiguration() {
-  log.debug(`Load the environment variables`);
-  await load({ export: true });
-}
+/** Cors setting and configuration */
+const cors = expressCors({ origin: '*' })
 
 /** Bootstrap the application and all dependecies in one place */
 async function bootstrap() {
-  await loadConfiguration();
+  console.info('Bootstraping application')
+  const app = Application()
 
-  log.info("Bootstraping the application");
+  console.log('Registering middleware')
+  app.use(compression())
+  app.use(rateLimit)
+  app.use(helmet())
+  app.use(cors)
+  app.use(json())
+  app.use(morgan('combined'))
 
-  const app = new Application();
-  log.info("Regitering middleware");
-  app.use(compress.brotli());
-  app.use(rateLimit);
-  app.use(oakCors({
-    origin: "*",
-  }));
+  // TODO: add auth controller routes
+  app.use([authController, userController])
 
-  // TODO: Regiter the controller routes
-  log.info("Regitering routes");
-  app.use(authController.routes(), authController.allowedMethods());
-  app.use(userController.routes(), userController.allowedMethods());
-
-  app.addEventListener("listen", ({ hostname, port, secure }) => {
-    log.info(
-      `Listening on: ${secure ? "https://" : "http://"}${
-        hostname ?? "localhost"
-      }:${port}`,
-    );
-  });
-
-  await app.listen({ port: 4000 });
+  console.info('Starting the application')
+  http(app)
 }
 
-bootstrap();
+bootstrap()

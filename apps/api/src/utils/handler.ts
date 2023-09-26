@@ -1,9 +1,10 @@
-import { Middleware, RouterContext, RouterMiddleware } from 'oak'
-import { HttpErrorException } from './http-exception.ts'
+import { NextFunction, Request, RequestHandler, Response } from 'express'
+import { HttpErrorException } from './http-exception'
 
 type FallbackFunction = (
-  ctx: RouterContext<any>,
-  next: () => Promise<unknown>,
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => Promise<any> | any
 
 /**
@@ -17,26 +18,29 @@ type FallbackFunction = (
  */
 export function middlewareHandler(
   fallbackFunction: FallbackFunction,
-): RouterMiddleware<any> | Middleware {
-  return async (ctx: RouterContext<any>, next: any) => {
+): RequestHandler {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       // get the initial data from the given fallback
       // allow to infer all of the function to running
       // then pass the response as json to api
-      const returnedData = await fallbackFunction(ctx, next)
+      const returnedData = await fallbackFunction(req, res, next)
 
       if (returnedData && returnedData.req && returnedData.res) {
         return await next()
       }
 
-      return ctx.response.body = returnedData
+      return res.json(returnedData)
     } catch (err) {
       // catch some error
       // then spread it into a custom error http exception
       // this will work with custom http exceptions
       const { message, statusCode, description } = err as HttpErrorException
-      ctx.response.status = statusCode
-      return ctx.response.body = { message, error: description, statusCode }
+      return res.status(statusCode).json({
+        statusCode,
+        message,
+        error: description,
+      })
     }
   }
 }

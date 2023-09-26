@@ -1,6 +1,6 @@
-import { validate } from 'validatorus'
-import { RouterContext, Status } from 'oak'
-import { getBody, getParams, getQuery } from '../utils/helpers.ts'
+import { validate } from 'class-validator'
+import { getBody, getParams, getQuery } from '~/utils/helpers'
+import { NextFunction, Request, RequestHandler, Response } from 'express'
 
 /**
  * ## validationMiddleware
@@ -19,24 +19,43 @@ import { getBody, getParams, getQuery } from '../utils/helpers.ts'
 export function validationMiddleware<T extends object>(
   dtoClass: new () => T,
   inputType: 'body' | 'params' | 'query',
-): any {
-  return async (ctx: RouterContext<any>, next: () => Promise<unknown>) => {
+): RequestHandler {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const dtoInstance = new dtoClass()
     const requestInput = {
-      body: await getBody(ctx),
-      query: getQuery(ctx),
-      params: getParams(ctx),
+      body: getBody(req),
+      query: getQuery(req),
+      params: getParams(req),
     }
 
-    const res = validate(requestInput[inputType], dtoClass)
-    if (res.errors) {
-      ctx.response.status = Status.NotAcceptable
-      return ctx.response.body = {
-        message: 'validation/input-error',
-        errors: { ...res.errors },
+    Object.assign(dtoInstance, requestInput[inputType])
+    requestInput[inputType] = dtoInstance
+
+    const errors = await validate(dtoInstance, {
+      forbidUnknownValues: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    })
+
+    if (errors && errors.length > 0) {
+      const validationErrors = {}
+
+      errors.forEach((error) => {
+        validationErrors[error.property] = Object.values(
+          error.constraints || {},
+        )
+      })
+
+      const errorResponse = {
+        statusCode: '402',
+        message: 'validation/invalid-input',
+        errors: validationErrors,
       }
+
+      return res.status(402).json(errorResponse)
     }
 
-    return await next()
+    return next()
   }
 }
 

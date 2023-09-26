@@ -18,7 +18,8 @@ on:
       - "apps/api/**"
 
 env:
-  DENO_DEPLOY_TOKEN: ${{secrets.DENO_DEPLOY_TOKEN}}
+  PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
 jobs:
   deploy:
@@ -28,28 +29,45 @@ jobs:
     permissions:
       id-token: write
       contents: read
-      
+
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Install Nitric CLI
+        uses: nitrictech/setup-nitric@v1
+        with:
+          version: 1.29.5
 
       - name: Setup Deno Environment
         uses: denoland/setup-deno@v1
         with:
           deno-version: 1.37.0
 
-      - name: Install Deployctl
-        run: deno install --allow-all --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+      - name: Install dependencies
+        uses: pulumi/setup-pulumi@v2
 
-      - name: Cache Dependencies
-        working-directory: ./apps/api
-        run: deno task install
-
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
         with:
-          project: cooble-api
-          entrypoint: main.ts
-          root: apps/api/src
-          import-map: apps/api/deno.json
-        
+          bun-version: latest
+
+      - name: Install Dependencies
+        working-directory: ./apps/api
+        run: bun install
+
+      - name: Create env file
+        working-directory: ./apps/api
+        run: |
+          echo "${{ secrets.API_ENV_FILE }}" > .env
+
+      - name: Deploy to production
+        working-directory: ./apps/api
+        run: nitric up -s prod -v0

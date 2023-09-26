@@ -1,0 +1,5 @@
+name: cooble-api
+handlers:
+  - src/main.ts
+preview-features:
+  - http

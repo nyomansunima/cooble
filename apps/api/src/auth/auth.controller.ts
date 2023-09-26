@@ -1,11 +1,11 @@
-import { Router } from 'oak'
-import { middlewareHandler } from '../utils/handler.ts'
-import { validateBody } from '../utils/validation.ts'
-import { GithubAuthInput, GoogleAuthInput } from './model/auth.input.ts'
-import { getBody } from '../utils/helpers.ts'
-import { authService } from './auth.service.ts'
+import { Router } from 'express'
+import { middlewareHandler } from '~/utils/handler'
+import { validateBody } from '~/utils/validation'
+import { GithubAuthInput, GoogleAuthInput } from './model/auth.input'
+import { getBody } from '~/utils/helpers'
+import { authService } from './auth.service'
 
-const authController = new Router()
+const authController = Router()
 
 authController.post(
   '/auth/google',

@@ -1,9 +1,9 @@
-import { Router } from 'oak'
-import { middlewareHandler } from '../utils/handler.ts'
-import { jwtAuthGuard } from '../auth/jwt-auth.guard.ts'
-import { getAuthUser } from '../utils/helpers.ts'
+import { middlewareHandler } from '../utils/handler'
+import { jwtAuthGuard } from '../auth/jwt-auth.guard'
+import { getAuthUser } from '../utils/helpers'
+import { Router } from 'express'
 
-const userController = new Router()
+const userController = Router()
 
 userController.get(
   '/user',

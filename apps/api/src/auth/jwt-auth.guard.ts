@@ -1,21 +1,18 @@
-import { configuration } from '../config/configuration.ts'
-import * as jose from 'jose'
+import { configuration } from '~/config/configuration'
+import * as jwt from 'jsonwebtoken'
 import {
   ForbiddenException,
   UnauthorizedException,
-} from '../utils/http-exception.ts'
-import { AuthJwtUser } from './model/auth.payload.ts'
-import { middlewareHandler } from '../utils/handler.ts'
+} from '~/utils/http-exception'
+import { AuthJwtUser } from './model/auth.payload'
+import { middlewareHandler } from '~/utils/handler'
 
 async function verifyJwtToken(token: string): Promise<any> {
   try {
-    const secret = new TextEncoder().encode(
-      configuration.auth.jwt.secret,
-    )
-    const { payload } = await jose.jwtVerify(token, secret, {
+    const payload = (await jwt.verify(token, configuration.auth.jwt.secret, {
       issuer: 'urn:cooble:issuer',
       audience: 'urn:cooble:audience',
-    })
+    })) as any
 
     return {
       id: payload.sub,
@@ -34,16 +31,17 @@ async function verifyJwtToken(token: string): Promise<any> {
  * @param ctx Router context
  * @param next middlware
  */
-export const jwtAuthGuard = middlewareHandler(async (ctx, next) => {
-  const token = ctx.request.headers.get('Authorization') &&
-    ctx.request.headers.get('Authorization')?.split(' ')[1]
+export const jwtAuthGuard = middlewareHandler(async (req, res, next) => {
+  const token =
+    req.headers['authorization'] &&
+    req.headers['authorization'].toString().split(' ')[1]
 
   if (!token) {
     throw new ForbiddenException('auth/credential-need')
   }
 
   const payload = await verifyJwtToken(token)
-  ctx.state.user = payload
+  req['user'] = payload
 
-  return await next()
+  return next()
 })
