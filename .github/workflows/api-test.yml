@@ -16,21 +16,21 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      
-      - name: Setup Deno Environment
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: 1.37.0
 
-      - name: Cache Dependencies
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
         working-directory: ./apps/api
-        run: deno task install
+        run: bun install
 
       - name: Setup Environment Variables
         working-directory: ./apps/api
         run: |
           echo "${{ secrets.API_ENV_FILE }}" > .env
-      
+
       - name: E2E Testing
         working-directory: ./apps/api
-        run: deno task test:e2e
+        run: bun run test:e2e
