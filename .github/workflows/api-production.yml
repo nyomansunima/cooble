@@ -11,11 +11,11 @@ name: Api Production
 # and push the code into the main branch
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "apps/api/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "apps/api/**"
 
 env:
   PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_ACCESS_TOKEN }}
