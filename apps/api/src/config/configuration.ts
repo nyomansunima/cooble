@@ -12,4 +12,13 @@ export const configuration = {
       apiKey: process.env.XATA_API_KEY!,
     },
   },
+  resend: {
+    apiKey: process.env.RESEND_API_KEY!,
+  },
+  upstash: {
+    redis: {
+      url: process.env.UPSTASH_REDIS_URL!,
+      token: process.env.UPSTASH_REDIS_TOKEN!,
+    },
+  },
 }

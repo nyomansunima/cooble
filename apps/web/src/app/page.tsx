@@ -1,3 +1,9 @@
+import { ActivateAccountModal } from '@components/auth/activate-account-modal'
+
 export default function Landing() {
-  return <main> App from landing page</main>
+  return (
+    <main>
+      <ActivateAccountModal />
+    </main>
+  )
 }

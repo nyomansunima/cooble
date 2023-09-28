@@ -10,8 +10,8 @@ const authController = Router()
 authController.post(
   '/auth/google',
   validateBody(GoogleAuthInput),
-  middlewareHandler(async (ctx) => {
-    const body = await getBody(ctx)
+  middlewareHandler(async (req) => {
+    const body = await getBody(req)
     return await authService.googleAuth(body)
   }),
 )
@@ -19,8 +19,8 @@ authController.post(
 authController.post(
   '/auth/github',
   validateBody(GithubAuthInput),
-  middlewareHandler(async (ctx) => {
-    const body = await getBody(ctx)
+  middlewareHandler(async (req) => {
+    const body = await getBody(req)
     return await authService.githubAuth(body)
   }),
 )

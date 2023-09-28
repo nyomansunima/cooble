@@ -44,3 +44,20 @@ export function getAuthUser(req: Request): AuthJwtUser {
   const user = req['user'] as any
   return user
 }
+
+/**
+ * Generate a random string that contain
+ * uppercase chars and numbers
+ *
+ * @param length the length of chars generated
+ * @returns {string}
+ */
+export function generateRandomCharsAndNumbers(length: number) {
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length)
+    result += charset[randomIndex]
+  }
+  return result
+}

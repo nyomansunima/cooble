@@ -5,7 +5,9 @@
   "private": true,
   "dependencies": {
     "@nitric/sdk": "^0.15.0",
+    "@react-email/components": "^0.0.7",
     "@types/compression": "^1.7.3",
+    "@upstash/redis": "^1.22.0",
     "@xata.io/client": "^0.26.6",
     "axios": "^1.5.0",
     "class-validator": "^0.14.0",
@@ -15,7 +17,8 @@
     "express-rate-limit": "^7.0.1",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "resend": "^1.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.14",
@@ -24,6 +27,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/morgan": "^1.9.5",
+    "@types/react": "^18.2.23",
     "@types/supertest": "^2.0.13",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",

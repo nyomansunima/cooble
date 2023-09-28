@@ -1,13 +1,28 @@
-import { GithubOAuthData, GoogleOAuthData } from '~/auth/model/auth.payload'
+import {
+  AuthJwtUser,
+  GithubOAuthData,
+  GoogleOAuthData,
+} from '~/auth/model/auth.payload'
 import { UserPayload } from './model/user.payload'
 import { getXataClient, Users } from '~/config/xata'
 import { CreateUserInput } from './model/user.input'
-import { UnprocessableEntityException } from '~/utils/http-exception'
+import {
+  BadRequestException,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '~/utils/http-exception'
+import { generateRandomCharsAndNumbers } from '~/utils/helpers'
+import { upstashRedis } from '~/config/upstash'
+import { emailService } from '~/email/email.service'
 
 class UserService {
   async getUserByEmail(email: string): Promise<Users | null> {
-    const user = await getXataClient().db.users.filter({ email }).getFirst()
-    return user
+    try {
+      const user = await getXataClient().db.users.filter({ email }).getFirst()
+      return user
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
   generateUsernameFromEmail(email: string): string {
@@ -75,5 +90,18 @@ class UserService {
     await this.assignProvider(user, GITHUB_PROVIDER)
     return user
   }
+
+  async sendAccountActivationEmail(input: AuthJwtUser): Promise<void> {
+    const user = await this.getUserByEmail(input.email)
+    if (user) {
+      const verificationCode = generateRandomCharsAndNumbers(6)
+      await upstashRedis.set(`${user.id}-token`, verificationCode)
+      await emailService.sendVerificationEmail(user, verificationCode)
+      return
+    } else {
+      throw new NotFoundException('user/not-found')
+    }
+  }
 }
+
 export const userService = new UserService()
