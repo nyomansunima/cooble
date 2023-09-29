@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '~/utils/http-exception'
 import { AuthJwtUser } from './model/auth.payload'
-import { middlewareHandler } from '~/utils/handler'
+import { exceptionMiddlewareHandler } from '~/utils/handler'
 
 async function verifyJwtToken(token: string): Promise<any> {
   try {
@@ -31,7 +31,7 @@ async function verifyJwtToken(token: string): Promise<any> {
  * @param ctx Router context
  * @param next middlware
  */
-export const jwtAuthGuard = middlewareHandler(async (req, res, next) => {
+export const jwtAuthGuard = exceptionMiddlewareHandler(async (req) => {
   const token =
     req.headers['authorization'] &&
     req.headers['authorization'].toString().split(' ')[1]
@@ -43,5 +43,5 @@ export const jwtAuthGuard = middlewareHandler(async (req, res, next) => {
   const payload = await verifyJwtToken(token)
   req['user'] = payload
 
-  return next()
+  return req
 })

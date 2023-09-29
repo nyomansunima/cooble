@@ -1,3 +1,5 @@
+import { Session } from 'next-auth'
+
 interface APIConenctionOption extends RequestInit {
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'
   body?: any
@@ -7,13 +9,16 @@ interface APIConenctionOption extends RequestInit {
 // retrive the token in every single request needed
 // this will useful when the resource need the
 // credential to access resources
-const getSession = async (): Promise<string> => {
+export const getSession = async (): Promise<Session | null> => {
   try {
     const res = await fetch('/api/auth/session')
 
     if (res.ok) {
       const data = await res.json()
-      return data
+      if (data.accessToken) {
+        return data
+      }
+      return null
     } else {
       throw await res.json()
     }
@@ -40,13 +45,17 @@ const apiConnection: <T extends Object>(
     },
   }
   if (options?.auth) {
-    const accessToken = getSession()
-    defaultOption = {
-      ...defaultOption,
-      headers: {
-        ...defaultOption.headers,
-        Authorization: `Bearer ${accessToken}`,
-      },
+    const session = await getSession()
+    if (session) {
+      defaultOption = {
+        ...defaultOption,
+        headers: {
+          ...defaultOption.headers,
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      }
+    } else {
+      throw new Error('Opps, session not found')
     }
   }
 
@@ -67,8 +76,12 @@ const apiConnection: <T extends Object>(
     })
 
     if (res.ok) {
-      const data = await res.json()
-      return data
+      try {
+        const data = await res.json()
+        return data
+      } catch (error) {
+        return
+      }
     } else {
       throw await res.json()
     }
