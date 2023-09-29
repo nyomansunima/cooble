@@ -1,3 +1,4 @@
+import { OnboardingEmailTemplate } from '@templates/emails/onboarding-email-template'
 import { VerifyEmailTemplate } from '@templates/emails/verification-email-template'
 import * as React from 'react'
 import { resendClient } from '~/config/resend'
@@ -17,6 +18,22 @@ class EmailService {
         react: React.createElement(VerifyEmailTemplate, {
           fullName: user.fullName!,
           verificationCode: verificationCode,
+        }),
+      })
+      return
+    } catch (error) {
+      throw new InternalServerErrorException('email/failed-sending-email')
+    }
+  }
+
+  async sendOnboardingEmail(user: Users): Promise<void> {
+    try {
+      await resendClient.emails.send({
+        from: 'onboarding@sonibble.com',
+        to: [user.email!],
+        subject: 'Explore & setup workspace',
+        react: React.createElement(OnboardingEmailTemplate, {
+          fullName: user.fullName!,
         }),
       })
       return

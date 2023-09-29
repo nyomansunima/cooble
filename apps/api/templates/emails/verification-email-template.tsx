@@ -13,7 +13,6 @@ import {
   Text,
   Img,
 } from '@react-email/components'
-import { FC } from 'react'
 
 interface VerifyEmailTemplateProps {
   fullName: string
@@ -26,7 +25,7 @@ interface VerifyEmailTemplateProps {
  *
  * @returns {FC}
  */
-const VerifyEmailTemplate: FC<VerifyEmailTemplateProps> = ({
+const VerifyEmailTemplate: React.FC<VerifyEmailTemplateProps> = ({
   fullName,
   verificationCode,
 }) => {

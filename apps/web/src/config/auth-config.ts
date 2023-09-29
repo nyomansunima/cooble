@@ -1,7 +1,7 @@
 import { AuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
-import { apiConnection } from '~/utils/api-connection'
+import { apiConnection } from '@services/api/api-connection'
 
 /**
  * Options and configuration to handle

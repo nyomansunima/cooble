@@ -22,5 +22,5 @@ export async function middleware(req: NextRequest) {
 
 /** Configuration to activate this middleware */
 export const config = {
-  matcher: ['/signin/:path*'],
+  matcher: ['/signin/:path*', '/verify-email/:path*'],
 }

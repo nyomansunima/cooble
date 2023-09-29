@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Activate Account | Cooble',
 }
 
-export default function VerifyEmailPage() {
+export default async function VerifyEmailPage() {
   return (
     <main className="flex h-screen w-screen">
       <VerifyEmailForm />

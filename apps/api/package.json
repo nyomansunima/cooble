@@ -55,6 +55,7 @@
     "dev": "concurrently \"nitric start\" \"wait-port localhost:50051 && npm run dev:handler\"",
     "start": "concurrently \"nitric start\" \"wait-port localhost:50051 && npm run dev:handler\"",
     "lint": "eslint . --fix",
-    "test:e2e": "jest test/e2e/*"
+    "test:e2e": "jest test/e2e/*",
+    "database:codegen": "xata codegen"
   }
 }
