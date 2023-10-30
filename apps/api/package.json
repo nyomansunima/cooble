@@ -4,7 +4,7 @@
   "description": "Core backend API for cooble",
   "private": true,
   "dependencies": {
-    "@nitric/sdk": "^0.15.0",
+    "@nitric/sdk": "^0.16.0",
     "@react-email/components": "^0.0.7",
     "@types/compression": "^1.7.3",
     "@upstash/redis": "^1.22.0",
