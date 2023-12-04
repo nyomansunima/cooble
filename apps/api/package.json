@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@nitric/sdk": "^0.15.0",
-    "@react-email/components": "^0.0.7",
+    "@react-email/components": "^0.0.12",
     "@types/compression": "^1.7.3",
     "@upstash/redis": "^1.22.0",
     "@xata.io/client": "^0.26.6",
